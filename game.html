@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Бегущий по Дубаю · Three.js игра</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #f5e6c8;
+  color: #2a1d10;
+  user-select: none;
+}
+#game-canvas { display: block; width: 100%; height: 100%; }
+
+/* HUD */
+#hud {
+  position: fixed; top: 0; left: 0; right: 0;
+  padding: 20px 30px;
+  display: flex; justify-content: space-between;
+  pointer-events: none;
+  z-index: 10;
+  font-weight: 600;
+}
+.hud-box {
+  background: rgba(255, 245, 220, 0.92);
+  padding: 12px 20px;
+  border-radius: 4px;
+  border: 2px solid #8b3a1f;
+  font-size: 18px;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 0 rgba(139, 58, 31, 0.4);
+}
+.hud-box .label { font-size: 11px; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.15em; display: block; margin-bottom: 2px; }
+.hud-box .value { font-size: 24px; font-weight: 800; color: #8b3a1f; font-variant-numeric: tabular-nums; }
+
+/* Overlays */
+.overlay {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: linear-gradient(180deg, rgba(255, 220, 170, 0.96), rgba(220, 145, 70, 0.96));
+  z-index: 100;
+  text-align: center;
+  padding: 40px;
+  transition: opacity 0.4s;
+}
+.overlay.hidden { opacity: 0; pointer-events: none; }
+.overlay h1 {
+  font-family: 'Georgia', serif;
+  font-size: clamp(48px, 8vw, 120px);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+  color: #4a1c08;
+  text-shadow: 4px 4px 0 #ffd882, 8px 8px 0 rgba(74, 28, 8, 0.2);
+}
+.overlay h1 em { font-style: italic; color: #8b3a1f; }
+.overlay .sub {
+  font-size: clamp(16px, 2vw, 22px);
+  max-width: 600px;
+  margin-bottom: 40px;
+  color: #4a1c08;
+  line-height: 1.5;
+}
+.overlay .controls {
+  display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;
+  margin-bottom: 40px;
+}
+.key {
+  background: #fff5dc;
+  padding: 10px 16px;
+  border-radius: 4px;
+  border: 2px solid #4a1c08;
+  box-shadow: 0 4px 0 #4a1c08;
+  font-weight: 700;
+  font-size: 14px;
+}
+.key kbd {
+  background: #4a1c08;
+  color: #ffd882;
+  padding: 4px 10px;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  margin-right: 8px;
+  display: inline-block;
+}
+.btn {
+  display: inline-block;
+  padding: 22px 50px;
+  background: #4a1c08;
+  color: #ffd882;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 6px 0 #2a0c00;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+  font-family: inherit;
+  text-decoration: none;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #2a0c00; }
+.btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #2a0c00; }
+.btn-ghost {
+  background: transparent;
+  color: #4a1c08;
+  box-shadow: none;
+  border: 2px solid #4a1c08;
+  font-size: 14px;
+  padding: 12px 24px;
+  margin-top: 20px;
+}
+.btn-ghost:hover { background: #4a1c08; color: #ffd882; transform: none; }
+
+#gameover-stats {
+  display: flex; gap: 40px; margin-bottom: 24px;
+}
+.stat-block { text-align: center; }
+.stat-block .num {
+  font-family: 'Georgia', serif;
+  font-size: 64px;
+  font-weight: 900;
+  color: #8b3a1f;
+  line-height: 1;
+}
+.stat-block .lbl {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #4a1c08;
+  margin-top: 6px;
+}
+
+#mobile-controls {
+  position: fixed; bottom: 30px; left: 0; right: 0;
+  display: none;
+  justify-content: space-between;
+  padding: 0 30px;
+  z-index: 50;
+  pointer-events: none;
+}
+.touch-btn {
+  width: 70px; height: 70px;
+  background: rgba(74, 28, 8, 0.7);
+  color: #ffd882;
+  border-radius: 50%;
+  border: 3px solid #ffd882;
+  font-size: 28px;
+  font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.touch-arrows { display: flex; gap: 12px; }
+@media (max-width: 768px) and (pointer: coarse) {
+  #mobile-controls { display: flex; }
+  #hud { padding: 12px 16px; }
+  .hud-box { padding: 8px 14px; font-size: 14px; }
+  .hud-box .value { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="game-canvas"></canvas>
+
+<!-- HUD -->
+<div id="hud">
+  <div class="hud-box">
+    <span class="label">AED собрано</span>
+    <span class="value" id="score">0</span>
+  </div>
+  <div class="hud-box">
+    <span class="label">Дистанция</span>
+    <span class="value" id="distance">0м</span>
+  </div>
+</div>
+
+<!-- Mobile -->
+<div id="mobile-controls">
+  <div class="touch-arrows">
+    <div class="touch-btn" id="btn-left">◀</div>
+    <div class="touch-btn" id="btn-right">▶</div>
+  </div>
+  <div class="touch-btn" id="btn-jump">▲</div>
+</div>
+
+<!-- Intro -->
+<div class="overlay" id="intro">
+  <h1>Бегущий<br>по&nbsp;<em>Дубаю</em></h1>
+  <p class="sub">
+    Беги по улице, собирай дирхамы, уворачивайся от верблюдов.<br>
+    Чем дальше пробежишь &mdash; тем выше скорость.
+  </p>
+  <div class="controls">
+    <div class="key"><kbd>A</kbd>/<kbd>←</kbd> влево</div>
+    <div class="key"><kbd>D</kbd>/<kbd>→</kbd> вправо</div>
+    <div class="key"><kbd>Space</kbd> прыжок</div>
+  </div>
+  <button class="btn" id="btn-start">Старт</button>
+  <a href="index.html" class="btn btn-ghost">← к отчёту</a>
+</div>
+
+<!-- Game Over -->
+<div class="overlay hidden" id="gameover">
+  <h1>Game&nbsp;<em>Over</em></h1>
+  <p class="sub">Верблюд оказался быстрее. Бывает.</p>
+  <div id="gameover-stats">
+    <div class="stat-block">
+      <div class="num" id="final-score">0</div>
+      <div class="lbl">AED</div>
+    </div>
+    <div class="stat-block">
+      <div class="num" id="final-distance">0</div>
+      <div class="lbl">метров</div>
+    </div>
+  </div>
+  <button class="btn" id="btn-restart">Ещё раз</button>
+  <a href="index.html" class="btn btn-ghost">← к отчёту</a>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+
+// ========== Setup ==========
+const canvas = document.getElementById('game-canvas');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xffd882);
+scene.fog = new THREE.Fog(0xffd882, 30, 90);
+
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
+camera.position.set(0, 5, 8);
+camera.lookAt(0, 1, -10);
+
+// Lights
+const sun = new THREE.DirectionalLight(0xfff2c0, 1.2);
+sun.position.set(8, 20, 5);
+sun.castShadow = true;
+sun.shadow.mapSize.width = 1024;
+sun.shadow.mapSize.height = 1024;
+sun.shadow.camera.left = -20;
+sun.shadow.camera.right = 20;
+sun.shadow.camera.top = 30;
+sun.shadow.camera.bottom = -10;
+sun.shadow.camera.near = 1;
+sun.shadow.camera.far = 60;
+scene.add(sun);
+
+const ambient = new THREE.AmbientLight(0xfdc890, 0.6);
+scene.add(ambient);
+
+const hemi = new THREE.HemisphereLight(0xffd882, 0xc88440, 0.5);
+scene.add(hemi);
+
+// ========== World ==========
+const LANES = [-2.4, 0, 2.4];
+const ROAD_WIDTH = 8;
+const SEGMENT_LENGTH = 30;
+
+// Road
+const roadGeo = new THREE.PlaneGeometry(ROAD_WIDTH, 600);
+const roadMat = new THREE.MeshStandardMaterial({ color: 0x6e5a3a, roughness: 0.95 });
+const road = new THREE.Mesh(roadGeo, roadMat);
+road.rotation.x = -Math.PI / 2;
+road.position.z = -200;
+road.receiveShadow = true;
+scene.add(road);
+
+// Sand on the sides
+const sandGeo = new THREE.PlaneGeometry(80, 600);
+const sandMat = new THREE.MeshStandardMaterial({ color: 0xe8b97a, roughness: 1 });
+const sandLeft = new THREE.Mesh(sandGeo, sandMat);
+sandLeft.rotation.x = -Math.PI / 2;
+sandLeft.position.set(-44, -0.01, -200);
+sandLeft.receiveShadow = true;
+scene.add(sandLeft);
+const sandRight = sandLeft.clone();
+sandRight.position.x = 44;
+scene.add(sandRight);
+
+// Lane markings (recycled)
+const dashGeo = new THREE.PlaneGeometry(0.2, 1.5);
+const dashMat = new THREE.MeshStandardMaterial({ color: 0xfff5dc });
+const dashes = [];
+for (let z = 0; z > -300; z -= 4) {
+  for (const lx of [-1.2, 1.2]) {
+    const d = new THREE.Mesh(dashGeo, dashMat);
+    d.rotation.x = -Math.PI / 2;
+    d.position.set(lx, 0.01, z);
+    scene.add(d);
+    dashes.push(d);
+  }
+}
+
+// Buildings (Dubai-ish skyline along the road)
+const buildings = [];
+function makeBuilding(x, z) {
+  const w = 3 + Math.random() * 2;
+  const h = 6 + Math.random() * 18;
+  const d = 3 + Math.random() * 3;
+  const hue = 0.06 + Math.random() * 0.05;
+  const sat = 0.3 + Math.random() * 0.3;
+  const lig = 0.55 + Math.random() * 0.2;
+  const color = new THREE.Color().setHSL(hue, sat, lig);
+  const geo = new THREE.BoxGeometry(w, h, d);
+  const mat = new THREE.MeshStandardMaterial({ color, roughness: 0.7 });
+  const b = new THREE.Mesh(geo, mat);
+  b.position.set(x, h / 2, z);
+  b.castShadow = true;
+  b.receiveShadow = true;
+  scene.add(b);
+
+  // Window strip
+  const winGeo = new THREE.PlaneGeometry(w * 0.85, h * 0.7);
+  const winMat = new THREE.MeshStandardMaterial({
+    color: 0x88ddee,
+    emissive: 0x223344,
+    metalness: 0.6,
+    roughness: 0.2,
+  });
+  const win = new THREE.Mesh(winGeo, winMat);
+  win.position.set(x + (x < 0 ? d / 2 + 0.01 : -(d / 2 + 0.01)), h / 2, z);
+  win.rotation.y = x < 0 ? Math.PI / 2 : -Math.PI / 2;
+  scene.add(win);
+
+  return { mesh: b, win, height: h };
+}
+for (let z = 0; z > -300; z -= 9) {
+  buildings.push(makeBuilding(-7 - Math.random() * 3, z));
+  buildings.push(makeBuilding(7 + Math.random() * 3, z));
+}
+
+// Far landmark — Burj Khalifa-ish
+const burjGroup = new THREE.Group();
+const burjMat = new THREE.MeshStandardMaterial({ color: 0xeae2cf, metalness: 0.4, roughness: 0.3 });
+for (let i = 0; i < 8; i++) {
+  const seg = new THREE.Mesh(new THREE.BoxGeometry(2.5 - i * 0.25, 6, 2.5 - i * 0.25), burjMat);
+  seg.position.y = 3 + i * 5.5;
+  burjGroup.add(seg);
+}
+const spire = new THREE.Mesh(new THREE.ConeGeometry(0.2, 8, 8), burjMat);
+spire.position.y = 3 + 8 * 5.5 + 4;
+burjGroup.add(spire);
+burjGroup.position.set(-3, 0, -180);
+scene.add(burjGroup);
+
+// Palm trees
+function makePalm(x, z) {
+  const trunkGeo = new THREE.CylinderGeometry(0.15, 0.2, 3.5, 8);
+  const trunkMat = new THREE.MeshStandardMaterial({ color: 0x6b4423 });
+  const trunk = new THREE.Mesh(trunkGeo, trunkMat);
+  trunk.position.set(x, 1.75, z);
+  trunk.castShadow = true;
+  scene.add(trunk);
+
+  const leafMat = new THREE.MeshStandardMaterial({ color: 0x4a7d2e });
+  for (let i = 0; i < 6; i++) {
+    const leaf = new THREE.Mesh(new THREE.ConeGeometry(0.25, 1.6, 4), leafMat);
+    const angle = (i / 6) * Math.PI * 2;
+    leaf.position.set(x + Math.cos(angle) * 0.7, 3.7, z + Math.sin(angle) * 0.7);
+    leaf.rotation.z = Math.cos(angle) * 0.7;
+    leaf.rotation.x = Math.sin(angle) * 0.7;
+    scene.add(leaf);
+  }
+  return trunk;
+}
+for (let z = -10; z > -300; z -= 18) {
+  makePalm(-5, z + Math.random() * 4);
+  makePalm(5, z + Math.random() * 4);
+}
+
+// ========== Player (humanoid figure) ==========
+const player = new THREE.Group();
+
+const skinMat = new THREE.MeshStandardMaterial({ color: 0xe8b899 });
+const shirtMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
+const pantsMat = new THREE.MeshStandardMaterial({ color: 0x2c3e50 });
+const hairMat = new THREE.MeshStandardMaterial({ color: 0x2c1810 });
+
+const head = new THREE.Mesh(new THREE.SphereGeometry(0.28, 16, 16), skinMat);
+head.position.y = 1.7;
+head.castShadow = true;
+player.add(head);
+
+const hair = new THREE.Mesh(new THREE.SphereGeometry(0.3, 16, 16, 0, Math.PI * 2, 0, Math.PI / 2), hairMat);
+hair.position.y = 1.78;
+player.add(hair);
+
+const torso = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.75, 0.32), shirtMat);
+torso.position.y = 1.05;
+torso.castShadow = true;
+player.add(torso);
+
+const armL = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.65, 0.2), shirtMat);
+armL.position.set(-0.36, 1.1, 0);
+armL.castShadow = true;
+player.add(armL);
+const armR = armL.clone();
+armR.position.x = 0.36;
+player.add(armR);
+
+const legL = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.7, 0.22), pantsMat);
+legL.position.set(-0.13, 0.35, 0);
+legL.castShadow = true;
+player.add(legL);
+const legR = legL.clone();
+legR.position.x = 0.13;
+player.add(legR);
+
+scene.add(player);
+
+// Player state
+const state = {
+  laneIndex: 1,
+  x: 0,
+  y: 0,
+  vy: 0,
+  jumping: false,
+  alive: true,
+  speed: 18,
+  baseSpeed: 18,
+  distance: 0,
+  score: 0,
+  running: false,
+};
+
+// ========== Coins ==========
+const coinGeo = new THREE.CylinderGeometry(0.32, 0.32, 0.08, 16);
+const coinMat = new THREE.MeshStandardMaterial({ color: 0xffd700, metalness: 0.8, roughness: 0.2, emissive: 0x442200 });
+const coins = [];
+function spawnCoin(z, lane) {
+  const c = new THREE.Mesh(coinGeo, coinMat);
+  c.rotation.x = Math.PI / 2;
+  c.position.set(LANES[lane], 1.1, z);
+  c.castShadow = true;
+  scene.add(c);
+  coins.push(c);
+}
+
+// ========== Camels ==========
+function makeCamel() {
+  const g = new THREE.Group();
+  const camelMat = new THREE.MeshStandardMaterial({ color: 0xc8884a, roughness: 0.9 });
+  const darkMat = new THREE.MeshStandardMaterial({ color: 0x6b4423 });
+
+  // Body
+  const body = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.7, 1.6), camelMat);
+  body.position.y = 1.0;
+  body.castShadow = true;
+  g.add(body);
+
+  // Hump
+  const hump = new THREE.Mesh(new THREE.SphereGeometry(0.5, 12, 12), camelMat);
+  hump.position.set(0, 1.55, 0.1);
+  hump.scale.set(1, 0.7, 1);
+  hump.castShadow = true;
+  g.add(hump);
+
+  // Neck
+  const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.22, 1.2, 8), camelMat);
+  neck.position.set(0, 1.6, -0.85);
+  neck.rotation.x = -Math.PI / 6;
+  neck.castShadow = true;
+  g.add(neck);
+
+  // Head
+  const head = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.32, 0.5), camelMat);
+  head.position.set(0, 2.15, -1.25);
+  head.castShadow = true;
+  g.add(head);
+
+  // Eyes
+  const eyeGeo = new THREE.SphereGeometry(0.05, 8, 8);
+  const eyeMat = new THREE.MeshStandardMaterial({ color: 0x000000 });
+  const eyeL = new THREE.Mesh(eyeGeo, eyeMat);
+  eyeL.position.set(-0.13, 2.2, -1.45);
+  g.add(eyeL);
+  const eyeR = eyeL.clone();
+  eyeR.position.x = 0.13;
+  g.add(eyeR);
+
+  // Legs
+  const legGeo = new THREE.CylinderGeometry(0.08, 0.1, 1.0, 6);
+  const legPositions = [
+    [-0.3, 0.5, -0.55],
+    [0.3, 0.5, -0.55],
+    [-0.3, 0.5, 0.55],
+    [0.3, 0.5, 0.55],
+  ];
+  const legs = [];
+  for (const [x, y, z] of legPositions) {
+    const leg = new THREE.Mesh(legGeo, darkMat);
+    leg.position.set(x, y, z);
+    leg.castShadow = true;
+    g.add(leg);
+    legs.push(leg);
+  }
+  g.userData.legs = legs;
+  return g;
+}
+const camels = [];
+function spawnCamel(z, lane) {
+  const c = makeCamel();
+  c.position.set(LANES[lane], 0, z);
+  scene.add(c);
+  camels.push(c);
+}
+
+// ========== Spawn pattern ==========
+let nextSpawnZ = -40;
+function generateAhead() {
+  while (nextSpawnZ > player.position.z - 200) {
+    const r = Math.random();
+    if (r < 0.45) {
+      // Coin row in random lane
+      const lane = Math.floor(Math.random() * 3);
+      for (let i = 0; i < 3 + Math.floor(Math.random() * 3); i++) {
+        spawnCoin(nextSpawnZ - i * 1.4, lane);
+      }
+    } else if (r < 0.85) {
+      // Camel(s)
+      const lane = Math.floor(Math.random() * 3);
+      spawnCamel(nextSpawnZ, lane);
+      // 30% chance of second camel different lane
+      if (Math.random() < 0.3) {
+        let lane2 = (lane + 1 + Math.floor(Math.random() * 2)) % 3;
+        spawnCamel(nextSpawnZ - 1.5, lane2);
+      }
+    } else {
+      // Mixed: coin in one lane, camel in another
+      const camelLane = Math.floor(Math.random() * 3);
+      const coinLane = (camelLane + 1 + Math.floor(Math.random() * 2)) % 3;
+      spawnCamel(nextSpawnZ, camelLane);
+      for (let i = 0; i < 3; i++) spawnCoin(nextSpawnZ - i * 1.4, coinLane);
+    }
+    nextSpawnZ -= 8 + Math.random() * 6;
+  }
+}
+
+// ========== Input ==========
+const KEYS = {};
+window.addEventListener('keydown', (e) => {
+  KEYS[e.code] = true;
+  if (e.code === 'Space') e.preventDefault();
+  if (state.running) {
+    if (e.code === 'KeyA' || e.code === 'ArrowLeft') moveLeft();
+    if (e.code === 'KeyD' || e.code === 'ArrowRight') moveRight();
+    if (e.code === 'Space' || e.code === 'KeyW' || e.code === 'ArrowUp') jump();
+  }
+});
+window.addEventListener('keyup', (e) => { KEYS[e.code] = false; });
+
+function moveLeft() { if (state.laneIndex > 0) state.laneIndex--; }
+function moveRight() { if (state.laneIndex < 2) state.laneIndex++; }
+function jump() {
+  if (!state.jumping && state.alive) {
+    state.vy = 9;
+    state.jumping = true;
+  }
+}
+
+// Touch buttons
+document.getElementById('btn-left').addEventListener('touchstart', (e) => { e.preventDefault(); if (state.running) moveLeft(); });
+document.getElementById('btn-right').addEventListener('touchstart', (e) => { e.preventDefault(); if (state.running) moveRight(); });
+document.getElementById('btn-jump').addEventListener('touchstart', (e) => { e.preventDefault(); if (state.running) jump(); });
+
+// Swipe (basic)
+let touchStart = null;
+canvas.addEventListener('touchstart', (e) => {
+  touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() };
+});
+canvas.addEventListener('touchend', (e) => {
+  if (!touchStart || !state.running) return;
+  const dx = e.changedTouches[0].clientX - touchStart.x;
+  const dy = e.changedTouches[0].clientY - touchStart.y;
+  if (Math.abs(dx) > Math.abs(dy)) {
+    if (dx > 30) moveRight();
+    else if (dx < -30) moveLeft();
+  } else {
+    if (dy < -30) jump();
+  }
+  touchStart = null;
+});
+
+// ========== UI ==========
+const intro = document.getElementById('intro');
+const gameover = document.getElementById('gameover');
+const scoreEl = document.getElementById('score');
+const distEl = document.getElementById('distance');
+const finalScoreEl = document.getElementById('final-score');
+const finalDistEl = document.getElementById('final-distance');
+
+document.getElementById('btn-start').addEventListener('click', startGame);
+document.getElementById('btn-restart').addEventListener('click', startGame);
+
+function startGame() {
+  // Clear existing coins/camels
+  for (const c of coins) scene.remove(c);
+  for (const c of camels) scene.remove(c);
+  coins.length = 0;
+  camels.length = 0;
+  nextSpawnZ = -40;
+
+  state.laneIndex = 1;
+  state.x = 0;
+  state.y = 0;
+  state.vy = 0;
+  state.jumping = false;
+  state.alive = true;
+  state.speed = state.baseSpeed;
+  state.distance = 0;
+  state.score = 0;
+  player.position.set(0, 0, 0);
+
+  intro.classList.add('hidden');
+  gameover.classList.add('hidden');
+  state.running = true;
+}
+
+function endGame() {
+  state.running = false;
+  state.alive = false;
+  finalScoreEl.textContent = state.score;
+  finalDistEl.textContent = Math.floor(state.distance);
+  setTimeout(() => gameover.classList.remove('hidden'), 600);
+}
+
+// ========== Game Loop ==========
+const clock = new THREE.Clock();
+let runTime = 0;
+
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+
+  if (state.running && state.alive) {
+    runTime += dt;
+    state.distance += state.speed * dt;
+    state.speed = state.baseSpeed + Math.min(state.distance / 50, 12);
+
+    // Lane transition
+    const targetX = LANES[state.laneIndex];
+    state.x += (targetX - state.x) * Math.min(dt * 12, 1);
+    player.position.x = state.x;
+
+    // Jump physics
+    state.vy -= 26 * dt;
+    state.y += state.vy * dt;
+    if (state.y <= 0) {
+      state.y = 0;
+      state.vy = 0;
+      state.jumping = false;
+    }
+    player.position.y = state.y;
+
+    // Move forward
+    player.position.z -= state.speed * dt;
+
+    // Animate legs/arms (running)
+    const legSwing = Math.sin(runTime * 12) * 0.6;
+    legL.rotation.x = legSwing;
+    legR.rotation.x = -legSwing;
+    armL.rotation.x = -legSwing;
+    armR.rotation.x = legSwing;
+
+    // Camera follow
+    camera.position.x = state.x * 0.3;
+    camera.position.y = 4.5 + state.y * 0.3;
+    camera.position.z = player.position.z + 7;
+    camera.lookAt(state.x * 0.3, 1.5 + state.y * 0.3, player.position.z - 8);
+
+    // Sun follows
+    sun.position.z = player.position.z + 5;
+    sun.target.position.z = player.position.z - 10;
+    sun.target.updateMatrixWorld();
+
+    // Recycle road dashes
+    for (const d of dashes) {
+      if (d.position.z > player.position.z + 10) d.position.z -= 300;
+    }
+
+    // Animate camels (legs)
+    for (const c of camels) {
+      const swing = Math.sin(runTime * 6 + c.position.z) * 0.4;
+      const legs = c.userData.legs;
+      if (legs) {
+        legs[0].rotation.x = swing;
+        legs[3].rotation.x = swing;
+        legs[1].rotation.x = -swing;
+        legs[2].rotation.x = -swing;
+      }
+      // Camels walk slowly toward player
+      c.position.z += 4 * dt;
+    }
+
+    // Spin coins
+    for (const c of coins) c.rotation.z += dt * 4;
+
+    // Generate ahead
+    generateAhead();
+
+    // Cleanup behind
+    for (let i = coins.length - 1; i >= 0; i--) {
+      if (coins[i].position.z > player.position.z + 12) {
+        scene.remove(coins[i]);
+        coins.splice(i, 1);
+      }
+    }
+    for (let i = camels.length - 1; i >= 0; i--) {
+      if (camels[i].position.z > player.position.z + 12) {
+        scene.remove(camels[i]);
+        camels.splice(i, 1);
+      }
+    }
+
+    // Collisions
+    const px = player.position.x;
+    const pz = player.position.z;
+    const py = player.position.y;
+
+    for (let i = coins.length - 1; i >= 0; i--) {
+      const c = coins[i];
+      const dx = c.position.x - px;
+      const dz = c.position.z - pz;
+      const dy = c.position.y - (py + 1);
+      if (Math.abs(dx) < 0.7 && Math.abs(dz) < 0.7 && Math.abs(dy) < 1) {
+        scene.remove(c);
+        coins.splice(i, 1);
+        state.score += 10;
+      }
+    }
+
+    for (const c of camels) {
+      const dx = c.position.x - px;
+      const dz = c.position.z - pz;
+      // Camel bbox roughly 1.0 wide × 2.0 long; player can jump over (clearance ~1.4)
+      if (Math.abs(dx) < 0.85 && Math.abs(dz) < 1.1 && py < 1.4) {
+        endGame();
+        break;
+      }
+    }
+
+    // HUD
+    scoreEl.textContent = state.score;
+    distEl.textContent = Math.floor(state.distance) + 'м';
+  }
+
+  renderer.render(scene, camera);
+}
+
+animate();
+
+// Handle resize
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+
+</body>
+</html>

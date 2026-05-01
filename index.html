@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Недвижимость в Дубае — рынок 2025-2026 · отчёт + 5 каналов привлечения</title>
+<meta name="description" content="High-level отчёт по рынку недвижимости Дубая 2025-2026: объём AED 917 млрд, off-plan, девелоперы, риски 2027 и пять медиа-каналов для брокера. Подготовил Тим Зинин." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800;9..144,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sand-50: oklch(98% 0.012 80);
+  --sand-100: oklch(95% 0.022 80);
+  --sand-200: oklch(90% 0.038 78);
+  --sand-300: oklch(82% 0.06 75);
+  --sand-400: oklch(72% 0.08 70);
+  --gold: oklch(72% 0.15 70);
+  --gold-deep: oklch(58% 0.16 55);
+  --bordeaux: oklch(38% 0.13 30);
+  --ink: oklch(22% 0.02 60);
+  --ink-2: oklch(35% 0.025 60);
+  --paper: oklch(97% 0.015 85);
+  --line: oklch(85% 0.02 75);
+  --accent: oklch(62% 0.18 45);
+  --teal: oklch(55% 0.08 200);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.55;
+  font-size: 17px;
+  overflow-x: hidden;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 1000;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.4 0 0 0 0 0.3 0 0 0 0 0.15 0 0 0 0.13 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+}
+.serif { font-family: 'Fraunces', 'Times New Roman', serif; font-feature-settings: 'ss01','ss03'; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* ========== Header / Hero ========== */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  padding: 20px 40px;
+  display: flex; justify-content: space-between; align-items: center;
+  z-index: 100;
+  mix-blend-mode: difference;
+  color: var(--paper);
+}
+.nav a { color: inherit; text-decoration: none; font-size: 14px; letter-spacing: 0.05em; text-transform: uppercase; }
+.nav .brand { font-weight: 700; }
+.nav-links { display: flex; gap: 32px; }
+
+.hero {
+  min-height: 100vh;
+  padding: 120px 40px 60px;
+  position: relative;
+  background: linear-gradient(180deg, var(--sand-100) 0%, var(--sand-200) 60%, var(--gold) 100%);
+  display: flex; flex-direction: column; justify-content: space-between;
+  overflow: hidden;
+}
+.hero::after {
+  content: ''; position: absolute; right: -10%; top: 10%;
+  width: 70vw; height: 80vh;
+  background: radial-gradient(ellipse, oklch(85% 0.18 75 / 0.5), transparent 60%);
+  pointer-events: none;
+}
+.hero-meta {
+  display: flex; justify-content: space-between;
+  font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-2);
+  position: relative; z-index: 2;
+}
+.hero-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 900;
+  font-size: clamp(60px, 11vw, 180px);
+  line-height: 0.88;
+  letter-spacing: -0.03em;
+  margin: 60px 0 40px;
+  position: relative; z-index: 2;
+}
+.hero-title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--bordeaux);
+}
+.hero-sub {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: end;
+  position: relative; z-index: 2;
+}
+.hero-lead {
+  font-size: clamp(18px, 1.5vw, 22px);
+  max-width: 540px;
+  color: var(--ink);
+}
+.hero-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  text-align: right;
+}
+.stat .num {
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  font-size: clamp(36px, 4vw, 56px);
+  line-height: 1;
+  color: var(--bordeaux);
+}
+.stat .label {
+  font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ink-2); margin-top: 8px;
+}
+
+/* ========== Sections ========== */
+section { padding: 120px 40px; position: relative; }
+.section-num {
+  font-family: 'Fraunces', serif;
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 16px;
+}
+.section-num::before {
+  content: ''; width: 60px; height: 1px; background: var(--gold-deep);
+}
+.section-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  font-size: clamp(44px, 6vw, 96px);
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  max-width: 1100px;
+  margin-bottom: 60px;
+}
+.section-title em { font-style: italic; font-weight: 400; color: var(--bordeaux); }
+
+.cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.col p + p { margin-top: 16px; }
+.col p { font-size: 17px; }
+.col strong { color: var(--bordeaux); font-weight: 600; }
+
+/* ========== Section 1: Overview ========== */
+.overview { background: var(--paper); }
+.kpi-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 24px; margin: 60px 0;
+}
+.kpi {
+  padding: 28px 24px;
+  background: var(--sand-50);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  position: relative;
+}
+.kpi-num {
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  font-size: 44px;
+  line-height: 1;
+  color: var(--bordeaux);
+}
+.kpi-label {
+  font-size: 13px; color: var(--ink-2);
+  text-transform: uppercase; letter-spacing: 0.05em;
+  margin-top: 12px;
+}
+.kpi-note { font-size: 12px; color: var(--gold-deep); margin-top: 6px; }
+
+table {
+  width: 100%; border-collapse: collapse; margin: 32px 0;
+  font-size: 15px;
+}
+table th, table td {
+  padding: 14px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+table th {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--gold-deep);
+  border-bottom: 2px solid var(--gold-deep);
+}
+table tr:hover td { background: var(--sand-50); }
+.yield-high { color: var(--bordeaux); font-weight: 600; }
+
+/* ========== Section 2: Drivers ========== */
+.drivers { background: var(--sand-100); }
+.flag-list { display: grid; gap: 16px; margin: 40px 0; }
+.flag-row {
+  display: grid;
+  grid-template-columns: 60px 1fr auto auto;
+  gap: 24px;
+  align-items: center;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 16px;
+}
+.flag-rank {
+  font-family: 'Fraunces', serif; font-weight: 800; font-size: 32px;
+  color: var(--gold-deep);
+}
+.flag-country { font-weight: 600; font-size: 18px; }
+.flag-share { color: var(--bordeaux); font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+.flag-note { color: var(--ink-2); font-size: 14px; max-width: 280px; text-align: right; }
+
+.devs {
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.dev-card {
+  padding: 32px 28px;
+  background: var(--paper);
+  border-left: 3px solid var(--bordeaux);
+}
+.dev-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+.dev-meta { font-size: 13px; color: var(--ink-2); margin-bottom: 12px; }
+.dev-desc { font-size: 14px; }
+
+/* ========== Section 3: Risks ========== */
+.risks { background: var(--paper); }
+.risk-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+  margin-top: 40px;
+}
+.risk-card {
+  padding: 36px 32px;
+  background: linear-gradient(135deg, var(--sand-50), var(--sand-100));
+  border: 1px solid var(--line);
+}
+.risk-tag {
+  display: inline-block; padding: 4px 12px;
+  background: var(--bordeaux); color: var(--paper);
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  border-radius: 2px; margin-bottom: 16px;
+}
+.risk-title {
+  font-family: 'Fraunces', serif; font-weight: 700;
+  font-size: 28px; line-height: 1.1; margin-bottom: 12px;
+}
+.risk-text { font-size: 15px; color: var(--ink-2); }
+.handover-bars {
+  display: flex; align-items: end; gap: 8px;
+  height: 140px; margin: 24px 0 12px;
+}
+.bar {
+  flex: 1; background: var(--gold);
+  border-radius: 2px 2px 0 0;
+  position: relative;
+  transition: opacity 0.3s;
+}
+.bar:hover { opacity: 0.8; }
+.bar.danger { background: var(--bordeaux); }
+.bar-label { position: absolute; bottom: -22px; left: 0; right: 0; text-align: center; font-size: 12px; color: var(--ink-2); }
+.bar-val { position: absolute; top: -22px; left: 0; right: 0; text-align: center; font-size: 12px; font-weight: 600; color: var(--bordeaux); }
+
+/* ========== Section 4: ICP ========== */
+.icp { background: linear-gradient(180deg, var(--sand-200), var(--sand-300)); }
+.icp-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 16px; margin-top: 40px;
+}
+.icp-card {
+  padding: 32px 20px;
+  background: var(--paper);
+  border-radius: 4px;
+  border-bottom: 4px solid var(--gold);
+}
+.icp-card:nth-child(1) { border-color: var(--bordeaux); }
+.icp-card:nth-child(2) { border-color: var(--gold); }
+.icp-card:nth-child(3) { border-color: var(--teal); }
+.icp-card:nth-child(4) { border-color: var(--accent); }
+.icp-card:nth-child(5) { border-color: var(--gold-deep); }
+.icp-name { font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; margin-bottom: 8px; }
+.icp-budget { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--bordeaux); margin-bottom: 12px; }
+.icp-want { font-size: 13px; color: var(--ink-2); }
+
+/* ========== Section 5: Channels ========== */
+.channels { background: var(--paper); }
+.channel {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 40px;
+  padding: 50px 0;
+  border-top: 1px solid var(--line);
+  align-items: start;
+}
+.channel:first-of-type { border-top: 2px solid var(--bordeaux); }
+.channel-num {
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  font-size: 100px;
+  line-height: 0.85;
+  color: var(--gold);
+  letter-spacing: -0.05em;
+}
+.channel-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+.channel-name .badge {
+  display: inline-block;
+  background: var(--bordeaux); color: var(--paper);
+  font-family: 'Inter', sans-serif; font-weight: 600;
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 2px;
+  vertical-align: middle;
+  margin-left: 12px;
+}
+.channel-meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px; margin: 24px 0;
+  padding: 20px;
+  background: var(--sand-50);
+  border-left: 3px solid var(--gold);
+}
+.meta-item .meta-label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ink-2); margin-bottom: 6px;
+}
+.meta-item .meta-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px; font-weight: 500;
+  color: var(--ink);
+}
+.channel-example {
+  padding: 20px 24px;
+  background: var(--sand-100);
+  border-radius: 4px;
+  font-size: 15px;
+  margin-top: 16px;
+  font-style: italic;
+}
+.channel-example strong { font-style: normal; color: var(--bordeaux); }
+
+/* ========== Conclusion ========== */
+.conclusion {
+  background: linear-gradient(140deg, var(--bordeaux), oklch(45% 0.13 35));
+  color: var(--paper);
+  padding: 140px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.conclusion::after {
+  content: ''; position: absolute; bottom: -40%; right: -20%;
+  width: 80vw; height: 100vh;
+  background: radial-gradient(ellipse, oklch(75% 0.16 75 / 0.35), transparent 60%);
+  pointer-events: none;
+}
+.conclusion-inner { max-width: 1100px; position: relative; z-index: 2; }
+.conclusion .section-num { color: oklch(85% 0.1 75); }
+.conclusion .section-num::before { background: oklch(85% 0.1 75); }
+.conclusion h2 {
+  font-family: 'Fraunces', serif; font-weight: 800;
+  font-size: clamp(40px, 5.5vw, 80px); line-height: 0.95;
+  letter-spacing: -0.025em;
+  margin-bottom: 40px;
+}
+.conclusion h2 em { font-style: italic; font-weight: 400; color: oklch(85% 0.14 75); }
+.conclusion p { font-size: 19px; line-height: 1.6; max-width: 800px; margin-bottom: 20px; }
+.recommendation {
+  margin-top: 60px;
+  padding: 40px;
+  border: 1px solid oklch(85% 0.1 75 / 0.4);
+  background: oklch(40% 0.13 35 / 0.4);
+  backdrop-filter: blur(10px);
+}
+.recommendation .rec-tag {
+  display: inline-block; padding: 4px 12px;
+  background: oklch(85% 0.14 75); color: var(--bordeaux);
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  font-weight: 700; margin-bottom: 16px;
+}
+.recommendation h3 {
+  font-family: 'Fraunces', serif; font-weight: 700;
+  font-size: 28px; margin-bottom: 12px;
+}
+
+/* ========== CTA / Game ========== */
+.cta-game {
+  background: var(--sand-100);
+  padding: 100px 40px;
+  text-align: center;
+}
+.cta-game h3 {
+  font-family: 'Fraunces', serif; font-weight: 800;
+  font-size: clamp(36px, 4.5vw, 64px); line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+.cta-game h3 em { font-style: italic; color: var(--bordeaux); }
+.cta-game p { max-width: 600px; margin: 0 auto 40px; font-size: 18px; color: var(--ink-2); }
+.cta-btn {
+  display: inline-block;
+  padding: 22px 50px;
+  background: var(--bordeaux); color: var(--paper);
+  font-weight: 600; font-size: 17px;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  border-radius: 2px;
+  transition: transform 0.2s, background 0.2s;
+}
+.cta-btn:hover { background: var(--ink); transform: translateY(-2px); }
+
+/* ========== Footer ========== */
+footer {
+  background: var(--ink);
+  color: var(--sand-200);
+  padding: 80px 40px 40px;
+  font-size: 14px;
+}
+footer h4 {
+  font-family: 'Fraunces', serif; font-weight: 700;
+  font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--gold); margin-bottom: 16px;
+}
+.sources {
+  columns: 2; column-gap: 40px;
+  margin-bottom: 40px;
+}
+.sources li { margin-bottom: 8px; break-inside: avoid; list-style: none; font-size: 13px; }
+.sources a { color: var(--sand-300); text-decoration: none; border-bottom: 1px dotted oklch(50% 0.04 60); }
+.sources a:hover { color: var(--gold); }
+.foot-meta {
+  border-top: 1px solid oklch(35% 0.02 60);
+  padding-top: 24px;
+  display: flex; justify-content: space-between; align-items: center;
+  color: oklch(60% 0.04 60);
+}
+.foot-meta a { color: var(--gold); text-decoration: none; }
+
+@media (max-width: 900px) {
+  .nav { padding: 16px 20px; }
+  .nav-links { gap: 16px; }
+  .nav-links a:nth-child(2) { display: none; }
+  section { padding: 80px 20px; }
+  .hero { padding: 100px 20px 40px; }
+  .hero-sub { grid-template-columns: 1fr; gap: 30px; }
+  .hero-stats { text-align: left; grid-template-columns: 1fr 1fr; }
+  .cols-2 { grid-template-columns: 1fr; gap: 40px; }
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
+  .devs { grid-template-columns: 1fr; }
+  .risk-grid { grid-template-columns: 1fr; }
+  .icp-grid { grid-template-columns: 1fr 1fr; }
+  .channel { grid-template-columns: 1fr; gap: 16px; }
+  .channel-num { font-size: 60px; }
+  .channel-meta { grid-template-columns: 1fr; }
+  .sources { columns: 1; }
+  .flag-row { grid-template-columns: 40px 1fr auto; }
+  .flag-note { display: none; }
+  table { font-size: 13px; }
+  table th, table td { padding: 10px 6px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="brand">Tim Zinin</a>
+  <div class="nav-links">
+    <a href="#overview">Рынок</a>
+    <a href="#channels">Каналы</a>
+    <a href="game.html">Игра →</a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-meta">
+    <span>Отчёт · 2025-2026</span>
+    <span>Подготовил Тим Зинин · 2026</span>
+  </div>
+
+  <h1 class="hero-title">
+    Недвижка<br>
+    в&nbsp;<em>Дубае</em>.<br>
+    Поверх<br>
+    <em>и в цифрах</em>.
+  </h1>
+
+  <div class="hero-sub">
+    <p class="hero-lead">
+      High-level разбор рынка на пике 2025 года, риски 2027-го и пять конкретных
+      медиа-каналов, через которые брокер или агентство в Дубае реально собирают
+      qualified лидов из HNW-аудитории.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="num">917<span style="font-size:0.5em">млрд</span></div>
+        <div class="label">AED · оборот рынка 2025</div>
+      </div>
+      <div class="stat">
+        <div class="num">270K+</div>
+        <div class="label">Сделок за год · +20% YoY</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 1. OVERVIEW ============ -->
+<section id="overview" class="overview">
+  <div class="section-num">01 · Обзор</div>
+  <h2 class="section-title">Рекордный год &mdash; и&nbsp;<em>off-plan</em><br>уже захватил рынок.</h2>
+
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-num">63<span style="font-size:0.5em">%</span></div>
+      <div class="kpi-label">Доля off-plan</div>
+      <div class="kpi-note">42 000+ сделок только в Q3</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">+29<span style="font-size:0.5em">%</span></div>
+      <div class="kpi-label">Рост стоимости YoY</div>
+      <div class="kpi-note">2034 AED/sqft премия off-plan</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">193K</div>
+      <div class="kpi-label">Активных инвесторов</div>
+      <div class="kpi-note">+24% YoY, 129K новых</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">1<span style="font-size:0.5em">трлн</span></div>
+      <div class="kpi-label">AED · цель к 2033</div>
+      <div class="kpi-note">Real Estate Strategy 2033</div>
+    </div>
+  </div>
+
+  <div class="cols-2">
+    <div class="col">
+      <p>
+        В 2025 году рынок Дубая поставил исторический рекорд: <strong>270 000+ транзакций
+        на сумму AED 917 млрд (~USD 249,7 млрд)</strong>, +20% по объёму и +29% по стоимости
+        к 2024-му. Это не просто рост &mdash; это смена режима: рынок окончательно сместился
+        в off-plan и стал инструментом первого выбора для глобального HNW-капитала.
+      </p>
+      <p>
+        Off-plan теперь &mdash; <strong>63% всех сделок</strong>, со средней ценой
+        2 034 AED/sqft против 1 577 у ready-сегмента. Покупатели платят премию за новый
+        инвентарь, branded residences и более выгодные планы платежей.
+      </p>
+    </div>
+    <div class="col">
+      <p>
+        База инвесторов выросла до 193 100 человек (+24%), из которых
+        <strong>129 600 &mdash; новички</strong>: эффект Golden Visa, отмены требования AED 1M
+        первоначального взноса в 2025-м и геополитического перетока капитала из Восточной
+        Европы и Азии.
+      </p>
+      <p>
+        H1 2025 закрылся на AED 431 млрд (+26% YoY по числу сделок). Стратегическая цель
+        до 2033 года &mdash; AED 1 трлн годового оборота &mdash; уже не выглядит фантастикой.
+      </p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Fraunces',serif;font-weight:700;font-size:24px;margin:60px 0 12px;">
+    Цены и доходность по ключевым районам
+  </h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Район</th>
+        <th>Сегмент</th>
+        <th>Средняя цена</th>
+        <th>Gross yield</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Downtown</td><td>Premium ready</td><td>~AED 2 800-3 200/sqft</td><td>6-8%</td></tr>
+      <tr><td>Dubai Marina</td><td>Mid-premium</td><td>~AED 1 800-2 200/sqft</td><td>3,9-6,5%</td></tr>
+      <tr><td>Palm Jumeirah</td><td>Ultra-luxury</td><td>AED 4 000-6 000+/sqft</td><td>4-6%</td></tr>
+      <tr><td>Business Bay</td><td>Mid-premium</td><td>~AED 1 700/sqft</td><td>5-6,7%</td></tr>
+      <tr><td>JVC</td><td>Affordable mid</td><td>~AED 1 000-1 200/sqft</td><td class="yield-high">7-9% · лидер</td></tr>
+      <tr><td>MBR City / Sobha Hartland</td><td>Premium off-plan</td><td>AED 1 800-2 400/sqft</td><td>5-6%</td></tr>
+      <tr><td>DAMAC Hills</td><td>Villas/townhouses</td><td>AED 1 200-1 600/sqft</td><td>5-6%</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ 2. DRIVERS ============ -->
+<section class="drivers">
+  <div class="section-num">02 · Драйверы и тренды</div>
+  <h2 class="section-title">Кто покупает<br>и&nbsp;<em>почему именно сейчас</em>.</h2>
+
+  <div class="cols-2" style="margin-bottom:60px;">
+    <div class="col">
+      <p>
+        Рынок Дубая 2025 &mdash; это рынок глобальных диаспор. Иностранцы делают подавляющее
+        большинство сделок, причём топ-5 национальностей дают около <strong>70% всего
+        иностранного спроса</strong>.
+      </p>
+      <p>
+        Главный регуляторный драйвер &mdash; Golden Visa с порогом AED 2M по DLD-валюации
+        и снятым в 2025-м требованием по первоначальному взносу. Это резко расширило пул
+        покупателей среднего HNW сегмента и легализовало ипотечные/off-plan покупки как
+        путь к виду на жительство.
+      </p>
+    </div>
+    <div class="col">
+      <p>
+        Второй драйвер &mdash; <strong>branded residences</strong>: USD 21,36 млрд продаж,
+        51 692 юнита в 166 проектах. Партнёрства с Cavalli, Bugatti, Mercedes, Bulgari
+        и Armani превратились в главный premium-инструмент девелоперов.
+      </p>
+      <p>
+        Третий &mdash; ужесточение RERA + DLD: эскроу, валюации, реестры off-plan. Прозрачность
+        выше, чем 5 лет назад, &mdash; и это прямой триггер для институционального капитала.
+      </p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Fraunces',serif;font-weight:700;font-size:24px;margin-bottom:16px;">
+    Топ-5 национальностей покупателей
+  </h3>
+  <div class="flag-list">
+    <div class="flag-row">
+      <div class="flag-rank">01</div>
+      <div class="flag-country">Индия</div>
+      <div class="flag-share">~22%</div>
+      <div class="flag-note">>AED 30 млрд · фокус mid-range с yield</div>
+    </div>
+    <div class="flag-row">
+      <div class="flag-rank">02</div>
+      <div class="flag-country">Великобритания</div>
+      <div class="flag-share">~17%</div>
+      <div class="flag-note">~AED 14,7 млрд · Marina/JVC, lifestyle + аренда</div>
+    </div>
+    <div class="flag-row">
+      <div class="flag-rank">03</div>
+      <div class="flag-country">Китай</div>
+      <div class="flag-share">~14%</div>
+      <div class="flag-note">Comeback story, off-plan luxury</div>
+    </div>
+    <div class="flag-row">
+      <div class="flag-rank">04</div>
+      <div class="flag-country">Саудовская Аравия</div>
+      <div class="flag-share">~11%</div>
+      <div class="flag-note">Самый высокий средний чек</div>
+    </div>
+    <div class="flag-row">
+      <div class="flag-rank">05</div>
+      <div class="flag-country">Россия</div>
+      <div class="flag-share">~9%</div>
+      <div class="flag-note">Sobha Hartland, Business Bay, branded · capital flight</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Fraunces',serif;font-weight:700;font-size:24px;margin:60px 0 16px;">
+    Топ девелоперов 2025
+  </h3>
+  <div class="devs">
+    <div class="dev-card">
+      <div class="dev-name">Emaar</div>
+      <div class="dev-meta">AED 65,8 млрд · №1 по value</div>
+      <div class="dev-desc">Лидер по стоимости. Downtown, Creek Harbour, Beachfront. Эталон для HNW сегмента.</div>
+    </div>
+    <div class="dev-card">
+      <div class="dev-name">DAMAC</div>
+      <div class="dev-meta">AED 35,9 млрд · №2 по value</div>
+      <div class="dev-desc">Branded residences в фокусе: Cavalli, de Grisogono. DAMAC Hills, Lagoons.</div>
+    </div>
+    <div class="dev-card">
+      <div class="dev-name">Binghatti</div>
+      <div class="dev-meta">17 061 сделка · №1 по volume</div>
+      <div class="dev-desc">Mid-market + branded коллабы Bugatti/Mercedes. Маркетинговая машина 2025.</div>
+    </div>
+  </div>
+  <p style="font-size:14px; color: var(--ink-2); margin-top: 16px;">
+    Топ-7 девелоперов = 62% нового supply. Также в эшелоне: Sobha, Nakheel, Aldar, Meraas, Azizi, Danube.
+  </p>
+</section>
+
+<!-- ============ 3. RISKS ============ -->
+<section class="risks">
+  <div class="section-num">03 · Риски</div>
+  <h2 class="section-title">Тест абсорбции<br>назначен на&nbsp;<em>2027-й</em>.</h2>
+
+  <div class="cols-2">
+    <div class="col">
+      <p>
+        Главный риск Дубая &mdash; не текущая цена, а <strong>пайплайн поставок</strong>.
+        В 2025 рынок поглотит около 22 900 юнитов (всего 62% от запланированного), в 2026 &mdash;
+        ~34 700 (48% от плана). Девелоперы намеренно растягивают handover.
+      </p>
+      <p>
+        Но в 2027 &mdash; <strong>70 537 юнитов</strong>, на 98% выше пятилетнего среднего.
+        Если этот объём действительно дойдёт до рынка, mid-market получит давление на цены.
+        Fitch прогнозирует возможную коррекцию <strong>до 15%</strong> в массовом сегменте
+        к концу 2025 &mdash; в 2026.
+      </p>
+    </div>
+    <div class="col">
+      <p>
+        Premium и ultra-luxury пока firm: ограниченный inventory (Palm, Emirates Hills,
+        Downtown penthouses), branded-проекты sold out на стадии лонч. Здесь риск
+        ниже, ticket size выше.
+      </p>
+      <p>
+        Дополнительный слой риска &mdash; <strong>геополитика</strong>: банковский compliance
+        и KYC по русским покупателям усиливаются, а укрепление AED через peg к USD создаёт
+        давление на покупателей из стран с волатильными валютами (RUB, TRY, EGP).
+      </p>
+    </div>
+  </div>
+
+  <div class="risk-grid">
+    <div class="risk-card">
+      <div class="risk-tag">Handover Pipeline</div>
+      <div class="risk-title">Лавина инвентаря в 2027</div>
+      <div class="handover-bars">
+        <div class="bar" style="height: 25%"><span class="bar-val">22.9K</span><span class="bar-label">2025</span></div>
+        <div class="bar" style="height: 49%"><span class="bar-val">34.7K</span><span class="bar-label">2026</span></div>
+        <div class="bar danger" style="height: 100%"><span class="bar-val">70.5K</span><span class="bar-label">2027</span></div>
+      </div>
+      <div class="risk-text" style="margin-top:32px;">
+        2027 &mdash; на 98% выше 5-летнего среднего. Локальные пузыри: JVC (16 852 юнита),
+        International City, Dubai Silicon Oasis, Dubai South.
+      </div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-tag">Коррекция</div>
+      <div class="risk-title">До 15% в mass-market</div>
+      <div class="risk-text">
+        Прогноз Fitch при доставке 210 000 юнитов за два года. Premium сегмент защищён
+        ограниченным inventory; mass-market apartments в спальных районах &mdash; зона
+        потенциальной коррекции. Branded и ultra-luxury &mdash; зона роста.
+      </div>
+      <div class="risk-text" style="margin-top:16px;">
+        <strong>Окно для агрессивных продаж:</strong> 2026, с фокусом на премиум и branded,
+        где оверсаплая нет.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. ICP ============ -->
+<section class="icp">
+  <div class="section-num">04 · ICP</div>
+  <h2 class="section-title">Кого таргетирует<br>дубайский&nbsp;<em>брокер</em>.</h2>
+
+  <div class="cols-2">
+    <div class="col" style="grid-column: span 2; max-width: 900px;">
+      <p>
+        У дубайского рынка нет одной целевой аудитории &mdash; есть пять чётко отличающихся
+        ICP с разной ценовой полосой, мотивацией и каналом захода. Маркетинг под Indian
+        end-user не работает на ultra-luxury Saudi, и наоборот.
+      </p>
+    </div>
+  </div>
+
+  <div class="icp-grid">
+    <div class="icp-card">
+      <div class="icp-name">Russian-speaking HNW</div>
+      <div class="icp-budget">AED 1,5-5M</div>
+      <div class="icp-want">Off-plan branded, Golden Visa, русский брокер + relocation, сохранность капитала</div>
+    </div>
+    <div class="icp-card">
+      <div class="icp-name">Indian end-users</div>
+      <div class="icp-budget">AED 0,8-2M</div>
+      <div class="icp-want">JVC/Business Bay, фокус на yield, mid-range, payment plans</div>
+    </div>
+    <div class="icp-card">
+      <div class="icp-name">UK expats</div>
+      <div class="icp-budget">AED 1-3M</div>
+      <div class="icp-want">Marina/JBR/JVC, lifestyle + rental income, школа рядом</div>
+    </div>
+    <div class="icp-card">
+      <div class="icp-name">Crypto-millionaires</div>
+      <div class="icp-budget">AED 5M+</div>
+      <div class="icp-want">Palm/Downtown ultra-luxury, branded, диверсификация капитала</div>
+    </div>
+    <div class="icp-card">
+      <div class="icp-name">Saudi / GCC</div>
+      <div class="icp-budget">AED 10M+</div>
+      <div class="icp-want">Premium villas (Emirates Hills, Palm), статус, family compound</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. CHANNELS ============ -->
+<section id="channels" class="channels">
+  <div class="section-num">05 · Каналы</div>
+  <h2 class="section-title">Пять каналов,<br>которые &mdash; <em>работают</em>.</h2>
+
+  <p style="max-width:800px; font-size:18px; color: var(--ink-2); margin-bottom: 40px;">
+    Из 11 рассмотренных кандидатов остались пять. Принцип отбора: реальная конверсия
+    в HNW-аудитории Дубая, понятный CPL, измеримость и совместимость с регуляторами
+    RERA/DLD.
+  </p>
+
+  <!-- Channel 1 -->
+  <div class="channel">
+    <div class="channel-num">01</div>
+    <div>
+      <div class="channel-name">Property Finder + Bayut<span class="badge">Intent</span></div>
+      <p>Платные featured-листинги на двух главных порталах ОАЭ. Регулируется через RERA Trakheesi &mdash; покупатель видит легитимность, что критично для иностранных инвесторов.</p>
+      <div class="channel-meta">
+        <div class="meta-item"><div class="meta-label">Аудитория</div><div class="meta-val">Active buyer-intent · 80%+ search traffic</div></div>
+        <div class="meta-item"><div class="meta-label">Бюджет</div><div class="meta-val">AED 3-60K/мес</div></div>
+        <div class="meta-item"><div class="meta-label">KPI</div><div class="meta-val">100-200 лидов/мес · 2-5% conv</div></div>
+      </div>
+      <div class="channel-example">
+        <strong>Пример:</strong> Premium project Downtown &rarr; Property Finder Premium + Hot Property &rarr; 120 лидов/мес &rarr; 6 сделок (5%). Mid-market JVC &rarr; Bayut Featured &rarr; 200 лидов/мес &rarr; 5 сделок.
+      </div>
+    </div>
+  </div>
+
+  <!-- Channel 2 -->
+  <div class="channel">
+    <div class="channel-num">02</div>
+    <div>
+      <div class="channel-name">Instagram + TikTok<span class="badge" style="background: var(--gold-deep);">Top CPL</span></div>
+      <p>Видео-туры объектов + микро-инфлюенсеры с реал-естейт нишей. Самый дешёвый канал для русско- и англоязычной HNW-аудитории. Прямые DM, низкий entry barrier.</p>
+      <div class="channel-meta">
+        <div class="meta-item"><div class="meta-label">Аудитория</div><div class="meta-val">HNW expats 28-50 · lifestyle-driven</div></div>
+        <div class="meta-item"><div class="meta-label">Бюджет</div><div class="meta-val">$800-5K/post · CPL $30-80</div></div>
+        <div class="meta-item"><div class="meta-label">KPI</div><div class="meta-val">50-150K views · 30-80 DM/нед</div></div>
+      </div>
+      <div class="channel-example">
+        <strong>Пример креатива:</strong> 60-сек walkthrough Sobha Hartland в drone+gimbal формате, голос RU/EN, CTA &laquo;Send DM "VISA" for Golden Visa eligibility check&raquo;. Ремаркетинг через Meta Ads на viewers >50%.
+      </div>
+    </div>
+  </div>
+
+  <!-- Channel 3 -->
+  <div class="channel">
+    <div class="channel-num">03</div>
+    <div>
+      <div class="channel-name">Telegram<span class="badge" style="background: var(--teal);">RU-speaking</span></div>
+      <p>Размещения в крупных русскоязычных каналах об инвестициях в Дубай + собственный экспертный канал брокера. Самый низкий CPL для русскоязычной аудитории.</p>
+      <div class="channel-meta">
+        <div class="meta-item"><div class="meta-label">Аудитория</div><div class="meta-val">RU-speaking HNW 35-55 · Golden Visa mindset</div></div>
+        <div class="meta-item"><div class="meta-label">Бюджет</div><div class="meta-val">$500-3K/post · CPL $40-120</div></div>
+        <div class="meta-item"><div class="meta-label">KPI</div><div class="meta-val">8-15% lead-to-meeting (warm)</div></div>
+      </div>
+      <div class="channel-example">
+        <strong>Пример:</strong> Размещения в @emirates_realty, @dubai_invest_pro + посев экспертного контента в собственном канале (отчёты по yield, разборы проектов, кейсы Golden Visa). Bot-воронка с квалификацией бюджета на входе.
+      </div>
+    </div>
+  </div>
+
+  <!-- Channel 4 -->
+  <div class="channel">
+    <div class="channel-num">04</div>
+    <div>
+      <div class="channel-name">Google Ads + YouTube long-form</div>
+      <p>Search-кампании на high-intent ключи + ретаргетинг через YouTube тур-видео. Покупает intent в момент решения, измеримый ROAS, бьёт по диаспорам в Tier-1 рынках.</p>
+      <div class="channel-meta">
+        <div class="meta-item"><div class="meta-label">Аудитория</div><div class="meta-val">Active intent · UK / India / US / EU diaspora</div></div>
+        <div class="meta-item"><div class="meta-label">Бюджет</div><div class="meta-val">AED 15-30K/мес · CPC AED 15-50</div></div>
+        <div class="meta-item"><div class="meta-label">KPI</div><div class="meta-val">CPL AED 250-800 · 3-7% conv</div></div>
+      </div>
+      <div class="channel-example">
+        <strong>Пример:</strong> Search на &laquo;Dubai property Golden Visa&raquo; + remarketing display на YouTube тур 8-15 минут (Marina penthouse walkthrough с broker on camera). Лендинг с yield calculator и формой.
+      </div>
+    </div>
+  </div>
+
+  <!-- Channel 5 -->
+  <div class="channel">
+    <div class="channel-num">05</div>
+    <div>
+      <div class="channel-name">PR &amp; Branded Events<span class="badge" style="background: var(--accent);">Ultra-luxury</span></div>
+      <p>Sponsored articles в Forbes Middle East / Khaleej Times / Arabian Business + закрытые dinner-events в Bulgari/Atlantis. Единственный канал для AED 5M+ ultra-luxury.</p>
+      <div class="channel-meta">
+        <div class="meta-item"><div class="meta-label">Аудитория</div><div class="meta-val">Ultra-HNW · family offices · GCC capital</div></div>
+        <div class="meta-item"><div class="meta-label">Бюджет</div><div class="meta-val">$8-25K статья · $30-80K event</div></div>
+        <div class="meta-item"><div class="meta-label">KPI</div><div class="meta-val">5-15 qualified leads/event · 2-4 сделки</div></div>
+      </div>
+      <div class="channel-example">
+        <strong>Пример:</strong> Колонка CEO агентства в Forbes ME про &laquo;Russian capital flow into Dubai branded residences&raquo; + dinner-event на Palm с 30 family-office prospects от broker network.
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:14px; color: var(--ink-2); margin-top: 60px; max-width: 800px;">
+    <strong>Отвергнутые кандидаты:</strong> LinkedIn (B2B плохо конвертит для real estate), Snapchat (локальная UAE-аудитория, не HNW), Meta Ads lookalike (дублирует Instagram-органику), программатик DSP (дорогой setup, имеет смысл только для девелопера).
+  </p>
+</section>
+
+<!-- ============ CONCLUSION ============ -->
+<section class="conclusion">
+  <div class="conclusion-inner">
+    <div class="section-num">Резюме</div>
+    <h2>Окно для&nbsp;<em>агрессивных продаж</em><br>&mdash; 2026.</h2>
+    <p>
+      Рынок Дубая в 2025 поставил исторический рекорд (AED 917 млрд), но в 2027 столкнётся
+      с тестом абсорбции на 70 000+ юнитов. Off-plan доминирует (63% сделок), Indian/UK/Chinese/Saudi/Russian &mdash;
+      70%+ иностранного спроса. Premium и branded остаются в зоне роста; mass-market apartments &mdash;
+      в зоне риска коррекции.
+    </p>
+    <p>
+      Действовать сейчас &mdash; в 2026, до того, как handover-волна 2027 вышибет цены в массовом сегменте.
+      Фокус &mdash; на премиум и branded, где оверсаплая нет.
+    </p>
+
+    <div class="recommendation">
+      <div class="rec-tag">Канал №1 для старта</div>
+      <h3>Instagram + TikTok &amp; Telegram-канал &mdash; двойной запуск</h3>
+      <p style="font-size:16px;">
+        Самый дешёвый CPL для русскоязычной HNW (USD 30-120), быстрая обратная связь, низкий entry barrier.
+        Параллельно &mdash; листинги на Property Finder (luxury) + Bayut (mid-market) для intent-traffic.
+        Google Ads и PR &mdash; фаза 2, после первых 6-8 закрытых сделок и накопленного case-портфеля.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA: GAME ============ -->
+<section class="cta-game">
+  <h3>А пока &mdash; <em>пройди улицами Дубая</em>.</h3>
+  <p>Three.js игра по мотивам отчёта: бегаешь по улице, собираешь монетки, уворачиваешься от верблюдов. Что-то вроде Super Mario, только в 3D и в пустыне.</p>
+  <a href="game.html" class="cta-btn">Играть →</a>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <h4>Источники</h4>
+  <ul class="sources">
+    <li><a href="https://dubailand.gov.ae/en/open-data/real-estate-data/">Dubai Land Department</a></li>
+    <li><a href="https://dmo.dof.gov.ae/en/news-and-publications/latest-press-releases/dubai-s-real-estate-market-records-new-historic-milestone-with-transactions-exceeding-aed917-billion-usd-2497-bn-in-2025/">Dubai PDMO &mdash; AED 917bn 2025 Record</a></li>
+    <li><a href="https://www.mediaoffice.ae/en/news/2025/july/20-07/dubai-real-estate-transactions-exceed-aed431-billion-in-h1-2025">Dubai Media Office &mdash; H1 2025</a></li>
+    <li><a href="https://www.zawya.com/en/press-release/research-and-studies/dubai-recorded-over-270-000-real-estate-transactions-worth-aed-917bln-in-2025-n8bfsueq">Zawya &mdash; 270K transactions 2025</a></li>
+    <li><a href="https://cavendishmaxwell.com/insights/market-reports/residential/dubai-residential-market-performance-q3-2025">Cavendish Maxwell &mdash; Q3 2025</a></li>
+    <li><a href="https://www.aiqya.com/dubai/dubai-q4-2025-apartment-market-report-off-plan-dominance-pricing-and-buyer-signals/">Aiqya &mdash; Q4 2025 Apartment Report</a></li>
+    <li><a href="https://dxbanalytics.com/blog/dubai-property-prices-2025-year-review">DXB Analytics &mdash; Year in Review</a></li>
+    <li><a href="https://www.bayut.com/mybayut/dubai-sales-market-report-h1-2025/">Bayut &mdash; Sales H1 2025</a></li>
+    <li><a href="https://www.bayut.com/mybayut/bayut-h1-2025-dubai-rental-market-report/">Bayut &mdash; Rental H1 2025</a></li>
+    <li><a href="https://www.propertyfinder.com/news/dubai-real-estate-market-shatters-records-with-historic-aed66-8-bn-of-transactions-in-may-2025-property-finder-reveals/">Property Finder &mdash; May 2025</a></li>
+    <li><a href="https://dxbinteract.com/news/dubai-residential-market-2025-top-foreign-investor-nationalities">DXB Interact &mdash; Top Nationalities</a></li>
+    <li><a href="https://veersant.com/blog/dubai-property-buyers-by-nationality-2025/">Veersant &mdash; Buyers by Nationality</a></li>
+    <li><a href="https://www.khaleejtimes.com/business/property/dubai-real-estate-slower-handover-2025-2026">Khaleej Times &mdash; Handover</a></li>
+    <li><a href="https://www.bhomes.com/en/blog/definitive-guides/dubai-supply-pipeline-property-prices-2026">Better Homes &mdash; Supply 2026</a></li>
+    <li><a href="https://www.thenationalnews.com/business/property/2025/11/08/dubais-new-housing-supply-fails-to-keep-pace-with-population-growth/">The National &mdash; Supply vs Population</a></li>
+    <li><a href="https://dubairealestateanalysis.com/blog/oversupply-risk-182000-units.html">Oversupply Risk Analysis</a></li>
+    <li><a href="https://topultraluxury.com/dubai-branded-residences-market/">Top Ultra Luxury &mdash; Branded</a></li>
+    <li><a href="https://www.arabianbusiness.com/industries/real-estate/dubai-real-estate-emaar-tops-sales-value-as-binghatti-leads-volumes-across-luxury-and-affordable-segments">Arabian Business &mdash; Developer Rankings</a></li>
+    <li><a href="https://www.miva.ae/real-estate-developers-in-dubai-2025-by-market-share/">Miva &mdash; Top 10 Developers</a></li>
+    <li><a href="https://armenian-lawyer.com/immigration/uae-golden-visa-financing-in-2025-aed-2m-threshold-and-down-payment-rule-change/">Armenian Lawyer &mdash; Golden Visa 2025</a></li>
+    <li><a href="https://brightsanddesigns.com/2025/11/28/property-finder-vs-bayut-which-portal-brings-better-roi-for-developers/">Property Finder vs Bayut ROI</a></li>
+    <li><a href="https://gulfnews.com/amp/story/business/property/from-jvc-to-dubai-south-these-areas-saw-the-biggest-price-and-rent-gains-in-2025-1.500402070">Gulf News &mdash; JVC Price Gains</a></li>
+  </ul>
+
+  <div class="foot-meta">
+    <span>© 2026 Tim Zinin · Отчёт носит ознакомительный характер, не является инвест-рекомендацией.</span>
+    <span><a href="https://timzinin.com">timzinin.com</a> · <a href="game.html">Игра →</a></span>
+  </div>
+</footer>
+
+<script>
+// Soft fade-in on scroll
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.style.opacity = 1; });
+}, { threshold: 0.1 });
+document.querySelectorAll('section, .channel, .icp-card, .dev-card, .kpi').forEach(el => {
+  el.style.opacity = 0;
+  el.style.transition = 'opacity 0.8s ease';
+  obs.observe(el);
+});
+</script>
+
+</body>
+</html>
